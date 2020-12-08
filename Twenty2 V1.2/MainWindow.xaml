@@ -1,0 +1,95 @@
+﻿<Window x:Class="Twenty2_V1._2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Twenty2_V1._2"
+        mc:Ignorable="d"
+        ResizeMode="CanMinimize"
+        StateChanged="statechange"
+        FocusManager.FocusedElement="{Binding ElementName=_textSearch}"
+        Title="Twenty2 V1.2" Height="400" Width="400">
+    
+    <Border Padding="20">
+        <StackPanel Margin="0,0, 0, 10">
+
+            <TextBlock Text="Settings" FontWeight="Bold" Margin="0 0 0 10"/>
+            <TextBlock Text="Change the time interval between breaks." FontWeight="Light" FontStyle="Italic"/>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width= "*"/>
+                    <ColumnDefinition Width= "2*"/>
+                    <ColumnDefinition Width= "*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="0 0 20 0" Grid.Column= "0" Content= "Reset" Name="Reset"/>
+                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Minutes" Name="ButtonTypeSwitch" Click="Button_click"/>
+
+                <TextBox Margin="20 0 0 0" Padding="2" Grid.Column="2" PreviewTextInput="NumberValidationTextBox" MaxLength="3" Name="AllowedTime"/>
+
+            </Grid>
+
+            <TextBlock Text="Change the amount of time in a break." FontWeight="Light" FontStyle="Italic"/>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width= "*"/>
+                    <ColumnDefinition Width= "2*"/>
+                    <ColumnDefinition Width= "*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="0 0 20 0" Grid.Column= "0" Content= "Reset" Name="Reset1"/>
+                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Seconds" Name="SecondButtonTypeSwitch" Click="SecondButton_click"/>
+
+                <TextBox Margin="20 0 0 0" Padding="2" Grid.Column="2" PreviewTextInput="NumberValidationTextBox" MaxLength="3" Name="AllowedBreakTime"/>
+
+            </Grid>
+
+            <TextBlock Text="Pick what music you wnat to play during your break." FontWeight="Light" FontStyle="Italic" Name="Filedisplay"/>
+            <Button Content="Open Media File" Click="Openfile_click" Name="Openfile"/>
+
+            <Grid>
+                <TextBlock Grid.Column="1"  Text="Start or stop the program." FontWeight="Light" FontStyle="Italic" HorizontalAlignment="Right"/>
+                <TextBlock Grid.Column="0" Text="Apply changes." FontWeight="Light" FontStyle="Italic" HorizontalAlignment="Left"/>
+            </Grid>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Margin="0 0 10 0"  Grid.Column="2" Content="Off" Name="OnButton" Click="On_click"/>
+
+                <Button Grid.Column="0" Content="Apply" Click="ApplyButton_click"/>
+            </Grid>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+            </Grid>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+
+            </Grid>
+
+        </StackPanel>
+    </Border>
+</Window>
