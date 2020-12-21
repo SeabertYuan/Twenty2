@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Timers;
@@ -31,28 +32,65 @@ namespace Twenty2_V1._2
         //public int BreakInterval { get; set; }
 
         public bool on { get; set; }
-        public bool elapsedBool;
+        //public bool elapsedBool;
         public Uri file { get; set; }
         public string disFile { get; set; }
 
+        /* trying dispatcher timer
         public System.Timers.Timer aTimer;
-
+        */
         public MediaPlayer media = new MediaPlayer();
+        
         OpenFileDialog dialog = new OpenFileDialog();
 
+        public DispatcherTimer twentyDispatcherTimer = new DispatcherTimer();
         #region Methods and Functions
 
         #region Timer
 
-        public void elapsed()
+        //Dispatcher Timer
+        public void setTwentyTimer()
         {
+            //Hour Minute or Second
+            if(MultiplyFactor == 1)
+            {
+                twentyDispatcherTimer.Interval += new TimeSpan(0, TimeAllowed, 0);
+            }
+            else if(MultiplyFactor == 2)
+            {
+                twentyDispatcherTimer.Interval += new TimeSpan(TimeAllowed, 0, 0);
+            }
+            else if(MultiplyFactor == 0)
+            {
+                twentyDispatcherTimer.Interval = new TimeSpan(0,0,TimeAllowed);
+            }
+            twentyDispatcherTimer.Tick += new EventHandler(twentyTimer_Tick);
+        }
+
+        //Triggered when event happens
+        public async void twentyTimer_Tick(object sender, EventArgs e)
+        {
+            media.Open(file);
+            twentyDispatcherTimer.Stop();
+            media.Play();
+            await Task.Delay(BreakTime * BreakMultiplyFactor);
+            media.Stop();
+            media.Close();
+            twentyDispatcherTimer.Start();
+        }
+        /* trying dispatcher timer
+        public void elapsed(MediaPlayer media)
+        {
+            this.media = media;
+
             aTimer.Stop();
 
             int BreakInterval = BreakTime * BreakMultiplyFactor;
 
             elapsedBool = true;
-            //media.Open(file);
-            media.Play();
+
+            //issue spot
+            this.media.Play();
 
             Task.Delay(BreakInterval).Wait();
 
@@ -88,18 +126,19 @@ namespace Twenty2_V1._2
             }
         }
 
+        //what happens when timer is done
         public void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
             if (on == true)
             {
-                elapsed();
+                elapsed(media);
             }
             else
             {
                 return;
             }
         }
-
+        */
         #endregion
 
         #region fileGet
@@ -138,18 +177,18 @@ namespace Twenty2_V1._2
         {
             BreakMultiplyFactor = 1000;
         }
-        public void buttonSwitchMinutes()
+        public void breakButtonSwitchMinutes()
         {
             BreakMultiplyFactor = 60000;
         }
 
-        public void buttonSwitchHours()
+        public void breakButtonSwitchHours()
         {
             BreakMultiplyFactor = 3600000;
         }
 
         #endregion
-
+        /*
         public void buttonSwitchSeconds()
         {
             MultiplyFactor = 1000;
@@ -163,6 +202,7 @@ namespace Twenty2_V1._2
         {
             MultiplyFactor = 3600000;
         }
+        */
 
         #endregion
     }

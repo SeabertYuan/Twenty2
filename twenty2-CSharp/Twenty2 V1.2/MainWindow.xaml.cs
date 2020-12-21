@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Timers;
+using System.Threading;
 
 namespace Twenty2_V1._2
 {
@@ -24,8 +25,10 @@ namespace Twenty2_V1._2
     /// </summary>
     public partial class MainWindow : Window
     {
-        playMusic playMusic = new playMusic();
+        static playMusic playMusic = new playMusic();
 
+
+        //Makes the label readable on the UI
         private void Openfile_click(object sender, RoutedEventArgs e)
         {
             string strfile = playMusic.fileFind();
@@ -37,17 +40,16 @@ namespace Twenty2_V1._2
 
         private void SecondButton_click(object sender, EventArgs e)
         {
-
+            //if currently on seconds
             if (playMusic.BreakButtonState == 0)
             {
                 SecondButtonTypeSwitch.Content = "Minutes";
                 playMusic.BreakButtonState = 1;
                 playMusic.breakButtonSwitchMinutes();
             }
-
             else
             {
-
+                //if currently on hours
                 if (playMusic.BreakButtonState == 2)
                 {
                     SecondButtonTypeSwitch.Content = "Seconds";
@@ -56,8 +58,7 @@ namespace Twenty2_V1._2
                 }
                 else
                 {
-
-
+                    //if currently on minutes
                     if (playMusic.BreakButtonState == 1)
                     {
                         SecondButtonTypeSwitch.Content = "Hours";
@@ -74,30 +75,31 @@ namespace Twenty2_V1._2
 
         private void Button_click(object sender, EventArgs e)
         {
-
+            //if currently on minutes
             if (playMusic.ButtonState == 1)
             {
                 ButtonTypeSwitch.Content = "Hours";
                 playMusic.ButtonState = 2;
-                playMusic.buttonSwitchHours();
+                playMusic.MultiplyFactor = 2;
             }
 
             else
             {
-
+                //if currently on hours
                 if (playMusic.ButtonState == 2)
                 {
                     ButtonTypeSwitch.Content = "Seconds";
                     playMusic.ButtonState = 0;
-                    playMusic.buttonSwitchSeconds();
+                    playMusic.MultiplyFactor = 0;
                 }
                 else
                 {
+                    //if currently on seconds
                     if (playMusic.ButtonState == 0)
                     {
                         ButtonTypeSwitch.Content = "Minutes";
                         playMusic.ButtonState = 1;
-                        playMusic.buttonSwitchMinutes();
+                        playMusic.MultiplyFactor = 1;
                     }
                 }
             }
@@ -114,14 +116,19 @@ namespace Twenty2_V1._2
             {
                 this.OnButton.Content = "On";
                 playMusic.on = false;
-                playMusic.onTimer();
 
+                timeThread.Abort();
+                
+                //playMusic.onTimer();
             }
             else
             {
                 this.OnButton.Content = "Off";
                 playMusic.on = true;
-                playMusic.onTimer();
+
+                timeThread = new Thread(new ThreadStart(threadSettings));
+                timeThread.Start();
+                //playMusic.onTimer();
             }
         }
 
@@ -139,25 +146,17 @@ namespace Twenty2_V1._2
             }
             else
             {
-                /*
                 playMusic.TimeAllowed = int.Parse(AllowedTime.Text);
                 playMusic.MultiplyFactor = int.Parse(AllowedBreakTime.Text);
-                playMusic.setTimer(playMusic.TimeAllowed, playMusic.MultiplyFactor);
-                */
-                playMusic.setTimer(int.Parse(AllowedTime.Text));
-            }
-            /*
-            if (string.IsNullOrEmpty(AllowedBreakTime.Text))
-            {
-                return;
-            }
-            else
-            {
 
-                playMusic.setTimer();
+                timeThread.Abort();
+                timeThread = new Thread(new ThreadStart(threadSettings));
+                timeThread.Start();
+                //playMusic.setTimer(int.Parse(AllowedTime.Text));
             }
-            */
         }
+
+        Thread timeThread = new Thread(new ThreadStart(threadStartAction));
 
         public MainWindow()
         {
@@ -169,32 +168,56 @@ namespace Twenty2_V1._2
 
             //playMusic.BreakMultiplyFactor = 1000;
             //playMusic.MultiplyFactor = 60000;
-            playMusic.breakButtonSwitchSeconds();
-            playMusic.buttonSwitchSeconds();
+            //playMusic.breakButtonSwitchSeconds();
+            //playMusic.buttonSwitchSeconds();
 
-            playMusic.ButtonState = 1;
-            playMusic.BreakButtonState = 0;
+            //playMusic.ButtonState = 1;
+            //playMusic.BreakButtonState = 0;
 
-            playMusic.TimeAllowed = 20;
-            playMusic.BreakTime = 20;
+            //playMusic.TimeAllowed = 20;
+            //playMusic.BreakTime = 20;
 
-            playMusic.file = new Uri(@"C:\Users\seabe\Music\Tobu - Candyland.mp3");
+            //playMusic.file = new Uri(@"C:\Users\seabe\Music\Tobu - Candyland.mp3");
 
-            playMusic.on = true;
+            
 
             #endregion
 
-            playMusic.setTimer(playMusic.TimeAllowed);
+            //playMusic.setTimer(playMusic.TimeAllowed);
+            //Thread timeThread = new Thread(threadStartAction);
+            timeThread.Start();
 
             #region Un-Minimize
 
             myIcon = new NotifyIcon();
+            //temporarily disabled
             //myIcon.Icon = new System.Drawing.Icon(@"C:\Seabert's Visual Studio\TwentyTwo v1.1\Icon test.ico");
 
             myIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(doubleclick);
 
             #endregion
 
+        }
+
+        public static void threadStartAction()
+        {
+            playMusic.on = true;
+            playMusic.file = new Uri(@"C:\Users\seabe\Music\Tobu - Candyland.mp3");
+            playMusic.breakButtonSwitchSeconds();
+            playMusic.MultiplyFactor = 0;
+
+            playMusic.ButtonState = 1;
+            playMusic.BreakButtonState = 0;
+
+            playMusic.TimeAllowed = 20;
+            playMusic.BreakTime = 20;
+            playMusic.setTwentyTimer();
+            playMusic.twentyDispatcherTimer.Start();
+        }
+        public void threadSettings()
+        {
+            playMusic.setTwentyTimer();
+            playMusic.twentyDispatcherTimer.Start();
         }
 
         #region Minimize
@@ -208,6 +231,7 @@ namespace Twenty2_V1._2
 
         private void statechange(object sender, EventArgs e)
         {
+            //if window is minimized
             if (this.WindowState == WindowState.Minimized)
             {
                 myIcon.Visible = true;
@@ -239,6 +263,7 @@ namespace Twenty2_V1._2
 
         #endregion
 
+        /* useless
         private void checkElapsed()
         {
             while (true)
@@ -249,6 +274,6 @@ namespace Twenty2_V1._2
                 }
             }
         }
-
+        */
     }
 }
