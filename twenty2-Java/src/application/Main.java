@@ -3,6 +3,7 @@ package application;
 import java.util.Calendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
@@ -69,13 +70,11 @@ public class Main extends Application {
 						bellScheduleButton.setText("Off");
 						bellScheduleLab.setText("The bell schedule feature is currently off");
 						bellSchedule.stopBell();
-						bellSchedule.bellTimes();
 					}
 					else {
 						bellScheduleButton.setText("On");
 						bellScheduleLab.setText("The bell schedule feature is currently on");
 						bellSchedule.startBell();
-						bellSchedule.bellTimes();
 					}
 
 				}
@@ -114,6 +113,8 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
+		bellSchedule bellObj = new bellSchedule();
+		
 		Thread guiThread = new Thread(() -> {
 			launch(args);
 			System.out.println("guiThread started!");
@@ -128,9 +129,9 @@ public class Main extends Application {
 		musicPlayingThread.start();
 				
 		Thread bellScheduleThread = new Thread(() -> {
-			Runnable urmom = bellSchedule.bellTimes();
-			ScheduledFuture<?> delay = scheduler.scheduleAtFixedRate(bellTimes(), 0, 1, MINUTES);
-			delay.schedule(bellSchedule::bellTimes, 60, TimeUnit.SECONDS);
+			ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+			ScheduledFuture<?> delay = scheduler.scheduleAtFixedRate(bellObj.run, 0, 1, TimeUnit.MINUTES);
+			//delay.schedule(bellSchedule::bellTimes, 60, TimeUnit.SECONDS);
 			System.out.println("bellSchedule Started!!");
 		});
 		
