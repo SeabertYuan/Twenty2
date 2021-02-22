@@ -22,61 +22,69 @@ namespace Twenty2_V1._2
 {
     class playMusic
     {
-        public int TimeAllowed { get; set; }
-        public int BreakTime { get; set; }
-
-        public int BreakMultiplyFactor { get; set; }
-        public int MultiplyFactor { get; set; }
-        public int ButtonState { get; set; }
-        public int BreakButtonState { get; set; }
+        public int timeAllowed { get; set; }
+        public int breakTime { get; set; }
+        public int multiplyFactor { get; set; }
+        public int buttonState { get; set; }
+        public int breakButtonState { get; set; }
         //public int BreakInterval { get; set; }
-
-        public bool on { get; set; }
+        private bool elapse = false;
+        public static bool on { get; set; }
         //public bool elapsedBool;
-        public Uri file { get; set; }
-        public string disFile { get; set; }
 
         /* trying dispatcher timer
         public System.Timers.Timer aTimer;
         */
         public MediaPlayer media = new MediaPlayer();
-        
-        OpenFileDialog dialog = new OpenFileDialog();
 
+        //creates new dispatcher timer
         public DispatcherTimer twentyDispatcherTimer = new DispatcherTimer();
-        #region Methods and Functions
 
         #region Timer
-
         //Dispatcher Timer
         public void setTwentyTimer()
         {
             //Hour Minute or Second
-            if(MultiplyFactor == 1)
+            if(multiplyFactor == 1)
             {
-                twentyDispatcherTimer.Interval += new TimeSpan(0, TimeAllowed, 0);
+                twentyDispatcherTimer.Interval = new TimeSpan(0, timeAllowed, 0);
             }
-            else if(MultiplyFactor == 2)
+            else if(multiplyFactor == 2)
             {
-                twentyDispatcherTimer.Interval += new TimeSpan(TimeAllowed, 0, 0);
+                twentyDispatcherTimer.Interval = new TimeSpan(timeAllowed, 0, 0);
             }
-            else if(MultiplyFactor == 0)
+            else if(multiplyFactor == 0)
             {
-                twentyDispatcherTimer.Interval = new TimeSpan(0,0,TimeAllowed);
+                twentyDispatcherTimer.Interval = new TimeSpan(0,0,timeAllowed);
             }
             twentyDispatcherTimer.Tick += new EventHandler(twentyTimer_Tick);
         }
-
         //Triggered when event happens
-        public async void twentyTimer_Tick(object sender, EventArgs e)
+        public void twentyTimer_Tick(object sender, EventArgs e)
         {
-            media.Open(file);
-            twentyDispatcherTimer.Stop();
-            media.Play();
-            await Task.Delay(BreakTime * BreakMultiplyFactor);
-            media.Stop();
-            media.Close();
-            twentyDispatcherTimer.Start();
+            if (on)
+            {
+                elapse = true;
+                breakTimer();
+                media.Open(interfaceClass.file);
+                media.Play();
+            }
+            else
+            {
+                Console.WriteLine("Feature is currently paused");
+            }
+        }
+
+        public async void breakTimer()
+        {
+            if(on)
+            {
+                twentyDispatcherTimer.Stop();
+                await Task.Delay(breakTime * interfaceClass.BreakMultiplyFactor);
+                media.Stop();
+                twentyDispatcherTimer.Start();
+            }
+
         }
         /* trying dispatcher timer
         public void elapsed(MediaPlayer media)
@@ -141,6 +149,14 @@ namespace Twenty2_V1._2
         */
         #endregion
 
+    }
+    class interfaceClass
+    {
+        public static int BreakMultiplyFactor { get; set; }
+        public static Uri file { get; set; }
+        OpenFileDialog dialog = new OpenFileDialog();
+        public string disFile { get; set; }
+
         #region fileGet
 
         public string fileFind()
@@ -150,19 +166,17 @@ namespace Twenty2_V1._2
             dialog.Filter = "MP3 files (*.mp3)|*.mp3|All files (*.*)|*.*";
 
             dialog.ShowDialog();
-
-            file = new Uri(dialog.FileName);
+            if(dialog.FileName != null)
+                file = new Uri(dialog.FileName);
 
             string disFile = file.ToString();
 
-            for (int i = disFile.Length - 1; i >= 0; i--)
+            for(int i = disFile.Length - 1; i >= 0; i--)
             {
                 disFileCount++;
 
                 if (disFile[i].Equals('/'))
                 {
-
-
                     break;
                 }
             }
@@ -181,7 +195,6 @@ namespace Twenty2_V1._2
         {
             BreakMultiplyFactor = 60000;
         }
-
         public void breakButtonSwitchHours()
         {
             BreakMultiplyFactor = 3600000;
@@ -203,7 +216,5 @@ namespace Twenty2_V1._2
             MultiplyFactor = 3600000;
         }
         */
-
-        #endregion
     }
 }

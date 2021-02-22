@@ -25,7 +25,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="0 0 20 0" Grid.Column= "0" Content= "Reset" Name="Reset"/>
-                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Minutes" Name="ButtonTypeSwitch" Click="Button_click"/>
+                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Minutes" Name="buttonTypeSwitch" Click="Button_click"/>
 
                 <TextBox Margin="20 0 0 0" Padding="2" Grid.Column="2" PreviewTextInput="NumberValidationTextBox" MaxLength="3" Name="AllowedTime"/>
 
@@ -42,7 +42,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Margin="0 0 20 0" Grid.Column= "0" Content= "Reset" Name="Reset1"/>
-                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Seconds" Name="SecondButtonTypeSwitch" Click="SecondButton_click"/>
+                <Button Margin="0 0 20 0" Grid.Column= "1" Content= "Seconds" Name="secondButtonTypeSwitch" Click="SecondButton_click"/>
 
                 <TextBox Margin="20 0 0 0" Padding="2" Grid.Column="2" PreviewTextInput="NumberValidationTextBox" MaxLength="3" Name="AllowedBreakTime"/>
 
@@ -87,9 +87,14 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-
             </Grid>
 
+            <TextBlock Margin="10" Height="125">
+                <TextBlock.Background>
+                    <SolidColorBrush Color='#ececec'/>
+                </TextBlock.Background>
+                        Console
+            </TextBlock>
         </StackPanel>
     </Border>
 </Window>
