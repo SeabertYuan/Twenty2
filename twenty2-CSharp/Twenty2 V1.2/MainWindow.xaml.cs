@@ -36,48 +36,52 @@ namespace Twenty2_V1._2
             Filedisplay.Text = $"Currently playing {strfile}";
         }
 
+        #region Button Text Updates
+        //updates the text on the break button
         public void updateBreakButton()
         {
             if (secondButtonTypeSwitch != null)
             {
                 //if currently on seconds
                 if (playMusic.breakButtonState == 0)
-                    secondButtonTypeSwitch.Content = "Minutes";
+                    secondButtonTypeSwitch.Content = "Seconds";
                 else
                 {
                     //if currently on hours
                     if (playMusic.breakButtonState == 2)
-                        secondButtonTypeSwitch.Content = "Seconds";
+                        secondButtonTypeSwitch.Content = "Hours";
                     else
                     {
                         //if currently on minutes
                         if (playMusic.breakButtonState == 1)
-                            secondButtonTypeSwitch.Content = "Hours";
+                            secondButtonTypeSwitch.Content = "Minutes";
                     }
                 }
             }
         }
+        //updates the text on the time button
         public void updateButton()
         {
             if (buttonTypeSwitch != null)
             {
                 //if currently on seconds
                 if (playMusic.buttonState == 0)
-                     buttonTypeSwitch.Content = "Minutes";
+                     buttonTypeSwitch.Content = "Seconds";
                 else
                 {
                     //if currently on hours
                     if (playMusic.buttonState == 2)
-                        buttonTypeSwitch.Content = "Seconds";
+                        buttonTypeSwitch.Content = "Hours";
                     else
                     {
                         //if currently on minutes
                         if (playMusic.buttonState == 1)
-                            buttonTypeSwitch.Content = "Hours";
+                            buttonTypeSwitch.Content = "Minutes";
                     }
                 }
             }
         }
+        #endregion
 
         #region Second Button Clicked
 
@@ -109,7 +113,6 @@ namespace Twenty2_V1._2
             }
             updateBreakButton();
         }
-
         #endregion
 
         #region First Button Clicked
@@ -143,7 +146,6 @@ namespace Twenty2_V1._2
             }
             updateButton();
         }
-
         #endregion
 
 
@@ -164,7 +166,6 @@ namespace Twenty2_V1._2
                     Console.WriteLine("Error aborting thread...");
                 }
                 playMusic.twentyDispatcherTimer.Stop();
-                //playMusic.onTimer();
             }
             else if(!playMusic.on)
             {
@@ -172,25 +173,23 @@ namespace Twenty2_V1._2
                 playMusic.on = true;
                 timeThread = new Thread(threadSettings);
                 timeThread.Start();
-                //playMusic.onTimer();
             }
         }
         #endregion
 
         private void ApplyButton_click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(AllowedTime.Text))
-            {
-                return;
-            }
-            else if(string.IsNullOrEmpty(AllowedBreakTime.Text))
-            {
-                return;
-            }
-            else
-            {
+            if(!string.IsNullOrEmpty(AllowedTime.Text))
                 playMusic.timeAllowed = int.Parse(AllowedTime.Text);
-                playMusic.multiplyFactor = int.Parse(AllowedBreakTime.Text);
+            if(!string.IsNullOrEmpty(AllowedBreakTime.Text))
+                playMusic.breakTime = int.Parse(AllowedBreakTime.Text);
+            if (!string.IsNullOrEmpty(AllowedTime.Text) || !string.IsNullOrEmpty(AllowedBreakTime.Text))
+            {
+                timeThread.Abort();
+                timeThread = new Thread(threadSettings);
+                updateBreakButton();
+                updateButton();
+                timeThread.Start();
             }
         }
 
@@ -200,25 +199,9 @@ namespace Twenty2_V1._2
         {
             gui = new Thread(InitializeComponent);
 
-            #region Defaults
+            //object
             playMusic playMusic = new playMusic();
 
-            //playMusic.BreakMultiplyFactor = 1000;
-            //playMusic.MultiplyFactor = 60000;
-            //playMusic.breakButtonSwitchSeconds();
-            //playMusic.buttonSwitchSeconds();
-
-            //playMusic.ButtonState = 1;
-            //playMusic.BreakButtonState = 0;
-
-            //playMusic.TimeAllowed = 20;
-            //playMusic.BreakTime = 20;
-
-            //playMusic.file = new Uri(@"C:\Users\seabe\Music\Tobu - Candyland.mp3");
-            #endregion
-
-            //playMusic.setTimer(playMusic.TimeAllowed);
-            //Thread timeThread = new Thread(threadStartAction);
             timeThread = new Thread(threadStartAction);
             timeThread.Start();
 
@@ -229,7 +212,6 @@ namespace Twenty2_V1._2
             //myIcon.Icon = new System.Drawing.Icon(@"C:\Seabert's Visual Studio\TwentyTwo v1.1\Icon test.ico");
             myIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(click);
             #endregion
-
         }
 
         public void threadStartAction()
@@ -242,7 +224,8 @@ namespace Twenty2_V1._2
 
             playMusic.buttonState = 1;
             playMusic.breakButtonState = 0;
-            //update text
+
+            //update text (doesn't work yet)
             updateButton();
             updateBreakButton();
 
@@ -253,6 +236,7 @@ namespace Twenty2_V1._2
         }
         public void threadSettings()
         {
+            playMusic.twentyDispatcherTimer.Stop();
             playMusic.setTwentyTimer();
             playMusic.twentyDispatcherTimer.Start();
         }

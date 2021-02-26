@@ -27,14 +27,7 @@ namespace Twenty2_V1._2
         public int multiplyFactor { get; set; }
         public int buttonState { get; set; }
         public int breakButtonState { get; set; }
-        //public int BreakInterval { get; set; }
-        private bool elapse = false;
         public static bool on { get; set; }
-        //public bool elapsedBool;
-
-        /* trying dispatcher timer
-        public System.Timers.Timer aTimer;
-        */
         public MediaPlayer media = new MediaPlayer();
 
         //creates new dispatcher timer
@@ -86,67 +79,6 @@ namespace Twenty2_V1._2
             }
 
         }
-        /* trying dispatcher timer
-        public void elapsed(MediaPlayer media)
-        {
-            this.media = media;
-
-            aTimer.Stop();
-
-            int BreakInterval = BreakTime * BreakMultiplyFactor;
-
-            elapsedBool = true;
-
-            //issue spot
-            this.media.Play();
-
-            Task.Delay(BreakInterval).Wait();
-
-            media.Stop();
-            media.Close();
-
-            aTimer.Start();
-        }
-
-        public void setTimer(int TimeAllowed)
-        {
-            int Interval = TimeAllowed * MultiplyFactor;
-
-            if (aTimer != null)
-                aTimer.Interval = Interval;
-            else
-                aTimer = new System.Timers.Timer(Interval);
-
-            aTimer.Elapsed += OnTimedEvent;
-            aTimer.AutoReset = true;
-            aTimer.Enabled = true;
-        }
-        public void onTimer()
-        {
-            if (on == true)
-            {
-                //aTimer.Elapsed += OnTimedEvent;
-                aTimer.Enabled = true;
-            }
-            else
-            {
-                aTimer.Enabled = false;
-            }
-        }
-
-        //what happens when timer is done
-        public void OnTimedEvent(Object source, ElapsedEventArgs e)
-        {
-            if (on == true)
-            {
-                elapsed(media);
-            }
-            else
-            {
-                return;
-            }
-        }
-        */
         #endregion
 
     }
@@ -201,20 +133,5 @@ namespace Twenty2_V1._2
         }
 
         #endregion
-        /*
-        public void buttonSwitchSeconds()
-        {
-            MultiplyFactor = 1000;
-        }
-        public void breakButtonSwitchMinutes()
-        {
-            MultiplyFactor = 60000;
-        }
-
-        public void breakButtonSwitchHours()
-        {
-            MultiplyFactor = 3600000;
-        }
-        */
     }
 }
