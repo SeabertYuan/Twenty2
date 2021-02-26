@@ -1,22 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Timers;
 
 namespace Twenty2_V1._2
 {
@@ -24,6 +10,7 @@ namespace Twenty2_V1._2
     {
         public int timeAllowed { get; set; }
         public int breakTime { get; set; }
+        //tells whether it should wait seconds, hours, or minutes before playing music
         public int multiplyFactor { get; set; }
         public int buttonState { get; set; }
         public int breakButtonState { get; set; }
@@ -57,7 +44,6 @@ namespace Twenty2_V1._2
         {
             if (on)
             {
-                elapse = true;
                 breakTimer();
                 media.Open(interfaceClass.file);
                 media.Play();
@@ -67,13 +53,13 @@ namespace Twenty2_V1._2
                 Console.WriteLine("Feature is currently paused");
             }
         }
-
+        //Asycn break
         public async void breakTimer()
         {
             if(on)
             {
                 twentyDispatcherTimer.Stop();
-                await Task.Delay(breakTime * interfaceClass.BreakMultiplyFactor);
+                await Task.Delay(breakTime * interfaceClass.breakMultiplyFactor);
                 media.Stop();
                 twentyDispatcherTimer.Start();
             }
@@ -84,7 +70,8 @@ namespace Twenty2_V1._2
     }
     class interfaceClass
     {
-        public static int BreakMultiplyFactor { get; set; }
+        //tells whether the break time should be seconds, minutes, or hours
+        public static int breakMultiplyFactor { get; set; }
         public static Uri file { get; set; }
         OpenFileDialog dialog = new OpenFileDialog();
         public string disFile { get; set; }
@@ -121,15 +108,15 @@ namespace Twenty2_V1._2
 
         public void breakButtonSwitchSeconds()
         {
-            BreakMultiplyFactor = 1000;
+            breakMultiplyFactor = 1000;
         }
         public void breakButtonSwitchMinutes()
         {
-            BreakMultiplyFactor = 60000;
+            breakMultiplyFactor = 60000;
         }
         public void breakButtonSwitchHours()
         {
-            BreakMultiplyFactor = 3600000;
+            breakMultiplyFactor = 3600000;
         }
 
         #endregion

@@ -1,21 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Timers;
 using System.Threading;
 
 namespace Twenty2_V1._2
@@ -220,8 +207,9 @@ namespace Twenty2_V1._2
             //set file to Tobu-Candyland
             interfaceClass.file = new Uri(@"C:\Users\seabe\Music\Tobu - Candyland.mp3");
             interfaceClass.breakButtonSwitchSeconds();
-            playMusic.multiplyFactor = 0; //seconds = 0, minutes = 1, hours = 2
+            playMusic.multiplyFactor = 1; //seconds = 0, minutes = 1, hours = 2
 
+            //for displaying button info
             playMusic.buttonState = 1;
             playMusic.breakButtonState = 0;
 
@@ -230,7 +218,7 @@ namespace Twenty2_V1._2
             updateBreakButton();
 
             playMusic.timeAllowed = 20;
-            playMusic.breakTime = 2;
+            playMusic.breakTime = 20;
             playMusic.setTwentyTimer();
             playMusic.twentyDispatcherTimer.Start();
         }
