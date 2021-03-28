@@ -18,6 +18,7 @@ Latest version:
 - Less hardcoded
 - Better variable and function names
 - Fixed class, namespace, and file names
+
 Runs on 3 threads, 1 timer, 1 gui, 1 main. Play and pause works by stopping and starting the thread. Whenever a setting is changed it calls methods in `User Settings.cs`(garbage name) that update variables. Timer is completely reset by restarting the thread. Is this the most efficient way? Probably not. Do I care? No.
 
 ## Java
