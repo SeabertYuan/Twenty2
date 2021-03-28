@@ -1,14 +1,16 @@
-﻿<Window x:Class="Twenty2_V1._2.MainWindow"
+﻿<Window x:Class="Twenty2.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Twenty2_V1._2"
+        xmlns:local="clr-namespace:Twenty2"
         mc:Ignorable="d"
         ResizeMode="CanMinimize"
         StateChanged="statechange"
         FocusManager.FocusedElement="{Binding ElementName=_textSearch}"
-        Title="Twenty2 V1.2" Height="400" Width="400">
+        Title="Twenty2" Height="400" Width="400"
+        Focusable="True"
+        Name="window">
     
     <Border Padding="20">
         <StackPanel Margin="0,0, 0, 10">

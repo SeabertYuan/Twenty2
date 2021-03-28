@@ -5,7 +5,7 @@ using System.Windows.Input;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace Twenty2_V1._2
+namespace Twenty2
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -196,8 +196,11 @@ namespace Twenty2_V1._2
 
             myIcon = new NotifyIcon();
             //temporarily disabled | Gets icon to display when minimized
-            //myIcon.Icon = new System.Drawing.Icon(@"C:\Seabert's Visual Studio\TwentyTwo v1.1\Icon test.ico");
+            myIcon.Icon = new System.Drawing.Icon(@"C:\Users\seabe\Pictures\untitled.ico");
             myIcon.MouseClick += new System.Windows.Forms.MouseEventHandler(click);
+            this.WindowState = WindowState.Minimized;
+            myIcon.Visible = true;
+            this.ShowInTaskbar = false;
             #endregion
         }
 
@@ -256,6 +259,7 @@ namespace Twenty2_V1._2
             {
                 myIcon.Visible = false;
                 this.ShowInTaskbar = true;
+                window.Focus();
             }
         }
 

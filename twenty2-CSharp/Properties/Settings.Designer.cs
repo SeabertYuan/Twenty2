@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Twenty2_V1._2.Properties
+namespace Twenty2.Properties
 {
 
 

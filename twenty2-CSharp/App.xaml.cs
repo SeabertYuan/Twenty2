@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Twenty2_V1._2
+namespace Twenty2
 {
     /// <summary>
     /// Interaction logic for App.xaml

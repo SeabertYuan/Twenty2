@@ -4,7 +4,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using System.Windows.Forms;
 
-namespace Twenty2_V1._2
+namespace Twenty2
 {
     class playMusic
     {
